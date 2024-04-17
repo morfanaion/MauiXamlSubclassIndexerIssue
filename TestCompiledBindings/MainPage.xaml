@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TestCompiledBindings.ViewModels"
+             xmlns:model="clr-namespace:TestCompiledBindings.Models"
+             x:DataType="vm:ViewModel"
+             x:Class="TestCompiledBindings.MainPage">
+    <ContentPage.BindingContext>
+        <vm:ViewModel />
+    </ContentPage.BindingContext>
+    <StackLayout Orientation="Vertical">
+        <!-- Addressing a property in RealModel that uses the indexer -->
+        <Label Text="{Binding RealModel.Text}" />
+        <!-- Addressing the indexer on the property of type RealModel -->
+        <Label Text="{Binding RealModel[This generates an error but works]}" />
+        <!-- Addressing the indexer on the same instance, but now the property is typed as BaseModel -->
+        <Label Text="{Binding BaseModel[This always works]}" />
+        <!-- Now we make sure that the label has the RealModel as BindingContext and use the indexer directly -->
+        <StackLayout BindingContext="{Binding RealModel}" >
+            <Label Text="{Binding [No problems here]}" x:DataType="model:RealModel" />
+        </StackLayout>
+    </StackLayout>
+</ContentPage>
